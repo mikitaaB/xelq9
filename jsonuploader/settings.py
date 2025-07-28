@@ -24,10 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-s^hao8d2wvxni6y_h^2)^9h+593)0k0u!@-x627@=)*89ngw96')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+# DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+DEBUG = bool(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -79,7 +80,10 @@ WSGI_APPLICATION = 'jsonuploader.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        # 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.{}'.format(
+            os.getenv('DB_ENGINE', 'sqlite3')
+        ),
         'NAME': os.getenv('DB_NAME', 'jsondb'),
         'USER': os.getenv('DB_USER', 'postgres'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),

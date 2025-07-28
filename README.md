@@ -2,6 +2,41 @@
 
 Веб-приложение для загрузки и просмотра JSON файлов с данными, развернутое с использованием Django + Gunicorn + Nginx.
 
+## Запуск в Docker
+
+### Команды для запуска
+
+1. **Сборка и запуск контейнеров:**
+   ```bash
+   docker compose up --build
+   ```
+
+2. **Выполнение миграций базы данных:**
+   ```bash
+   docker compose run django-web python manage.py migrate
+   ```
+
+3. **Запуск в фоновом режиме (detached mode):**
+   ```bash
+   docker compose up -d
+   ```
+
+### Последовательность запуска
+
+```bash
+# Сборка и первый запуск
+docker compose up --build
+
+# В новом терминале: применение миграций
+docker compose run django-web python manage.py migrate
+
+# Остановка контейнеров
+docker compose down
+
+# Запуск в фоновом режиме
+docker compose up -d
+```
+
 ## Развертывание на сервере
 
 ### 1. Обновление пакетов apt
