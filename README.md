@@ -240,24 +240,3 @@ sudo certbot --nginx -d your_domain.com -d www.your_domain.com
 ```bash
 sudo certbot renew --dry-run
 ```
-
-### Формат JSON файла
-
-```json
-[
-    {
-        "name": "Иван Иванов",
-        "email": "ivan@example.com",
-        "age": 30,
-        "position": "Разработчик",
-        "hire_date": "2023-01-15_10:30"
-    },
-    {
-        "name": "Мария Петрова",
-        "email": "maria@example.com",
-        "age": 28,
-        "position": "Дизайнер",
-        "hire_date": "2023-02-20_09:00"
-    }
-]
-```
