@@ -2,6 +2,9 @@
 
 Веб-приложение для загрузки и просмотра JSON файлов с данными, развернутое с использованием Django + Gunicorn + Nginx.
 
+## Tech Stack
+Python, Django, PostgreSQL
+
 ## Запуск в Docker
 
 ### Команды для запуска
