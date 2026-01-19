@@ -1,93 +1,55 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Таблица данных</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.dataTables.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .nav {
-            margin-bottom: 30px;
-        }
-        .nav a {
-            color: #007bff;
-            text-decoration: none;
-            margin-right: 20px;
-            font-weight: bold;
-        }
-        .nav a:hover {
-            text-decoration: underline;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-        }
-        #entryTable {
-            width: 100% !important;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="nav">
-            <a href="/">Загрузка файла</a>
-            <a href="/table/">Таблица</a>
-        </div>
+{% extends 'layout.html' %}
 
-        <h1>Таблица загруженных данных</h1>
+{% block title %}Таблица данных{% endblock %}
 
-        <table id="entryTable" class="display">
-            <thead>
-                <tr>
-                    <th>Имя</th>
-                    <th>Дата</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entry in entries %}
-                    <tr>
-                        <td>{{ entry.name }}</td>
-                        <td>{{ entry.date|date:"Y-m-d H:i" }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+{% block content %}
+<h1>Таблица загруженных данных</h1>
 
-    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.6/js/dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#entryTable').DataTable({
-                "language": {
-                    "lengthMenu": "Показать _MENU_ записей на странице",
-                    "zeroRecords": "Записи не найдены",
-                    "info": "Показано _START_ до _END_ из _TOTAL_ записей",
-                    "infoEmpty": "Показано 0 до 0 из 0 записей",
-                    "infoFiltered": "(отфильтровано из _MAX_ всего записей)",
-                    "search": "Поиск:",
-                    "paginate": {
-                        "first": "Первая",
-                        "last": "Последняя",
-                        "next": "Следующая",
-                        "previous": "Предыдущая"
-                    }
-                },
-                "pageLength": 25,
-                "order": [[ 1, "desc" ]]
-            });
+<table id="entryTable" class="display">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Дата</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in entries %}
+        <tr>
+            <td>{{ entry.name }}</td>
+            <td>{{ entry.date|date:"Y-m-d H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.dataTables.min.css">
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.6/js/dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#entryTable').DataTable({
+            "language": {
+                "lengthMenu": "Показать _MENU_ записей на странице",
+                "zeroRecords": "Записи не найдены",
+                "info": "Показано _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Показано 0 до 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ всего записей)",
+                "search": "Поиск:",
+                "paginate": {
+                    "first": "Первая",
+                    "last": "Последняя",
+                    "next": "Следующая",
+                    "previous": "Предыдущая"
+                }
+            },
+            "pageLength": 25,
+            "order": [[1, "desc"]]
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+{% endblock %}

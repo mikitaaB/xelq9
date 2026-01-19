@@ -5,21 +5,27 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    container_name: db
     ports:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/18/docker
-    env_file:
-      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-json-db}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - app-network
 
   django-web:
     build: .
+    container_name: django-web
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       SECRET_KEY: ${SECRET_KEY}
       DEBUG: ${DEBUG}
@@ -34,9 +40,11 @@ services:
     command: >
       sh -c "
         python manage.py migrate --noinput &&
+        python manage.py collectstatic --noinput &&
         gunicorn --bind 0.0.0.0:8000 --workers 3 jsonuploader.wsgi:application"
-    env_file:
-      - .env
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
     networks:
       - app-network
 
@@ -49,11 +57,17 @@ services:
       - "80:80"
     depends_on:
       - django-web
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
     networks:
       - app-network
 
 volumes:
   pg_data:
+  static_volume:
+  media_volume:
+
 
 networks:
   app-network:
